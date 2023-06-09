@@ -29,15 +29,27 @@
 ### 2. Create .env file and add your environment variables
 
 ```bash
-  PROVIDER=digitalocean
-  DO_AUTH_TOKEN=<your_token>
-  ACME_STORAGE=/etc/traefik/acme/acme.json
-  EMAIL=<your_email>
-  TRAFIK_DOMAIN=traefik.<your_domain>
-  DASHBOARD_AUTH=<your_dashboard_auth>
-  API_DOMAIN=<your_api_domain>
-  POSTGRES_USER=<your_postgres_user>
-  POSTGRES_PASSWORD=<your_postgres_password>
+# Lets-encrypt - Digital Ocean
+PROVIDER=digitalocean
+EMAIL=<your_email>
+ACME_STORAGE=/etc/traefik/acme/acme.json
+DO_AUTH_TOKEN=<your_token>
+
+# Traefik
+TRAFIK_DOMAIN=traefik.<your_domain>
+DASHBOARD_AUTH=<your_dashboard_auth>
+
+# API
+API_DOMAIN=<your_api_domain>
+
+# Postgres
+POSTGRES_USER=<your_postgres_user>
+POSTGRES_PASSWORD=<your_postgres_password>
+
+# PgAdmin
+PGADMIN_DOMAIN=pgadmin.<your_domain>
+PGADMIN_DEFAULT_EMAIL=<your_pgadmin_email>
+PGADMIN_DEFAULT_PASSWORD=<your_pgadmin_password>
 ```
 
 To generate your token, go to [DigitalOcean](https://cloud.digitalocean.com/account/api/tokens) and create a new token.
