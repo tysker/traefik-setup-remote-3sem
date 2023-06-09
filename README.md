@@ -20,7 +20,13 @@
 
 ## Setup
 
-### 1. Create .env file and add your environment variables
+### 1. Clone the repository into your server
+
+```bash
+  git clone https://github.com/tysker/3sem-traefik-setup-remote.git
+```
+
+### 2. Create .env file and add your environment variables
 
 ```bash
   PROVIDER=digitalocean
@@ -36,9 +42,10 @@
 
 To generate your token, go to [DigitalOcean](https://cloud.digitalocean.com/account/api/tokens) and create a new token.
 
-### 2. Create acme.json file
+### 3. Create acme directory and an acme.json file
 
 ```bash
+  mkdir ./acme
   touch ./acme/acme.json
 ```
 
@@ -46,37 +53,39 @@ To generate your token, go to [DigitalOcean](https://cloud.digitalocean.com/acco
   chmod 600 ./acme/acme.json
 ```
 
-### 3. How to generate DASHBOARD_AUTH
+### 4. How to generate DASHBOARD_AUTH
 
 ```bash
   echo $(htpasswd -nb <your_username> <your_password>) | sed -e s/\\$/\\$\\$/g
 ```
 
-### 4. Run Docker
+### 5. Run Docker
 
 ```bash
   docker-compose up -d
 ```
 
-### 5. Stop Docker
+### 6. Stop Docker
 
 ```bash
   docker-compose down
 ```
 
-### 6. Access Traefik Dashboard through browser
+### 7. Access Traefik Dashboard through browser
 
 ```bash
   traefik.<your_domain>
 ```
 
-### 7. Access Your Rest Api
+### 8. Access Your Rest Api
 
 ```bash
   <your_domain>/<your_api_path>
 ```
 
-### 8. Clear DB data installation
+***
+
+### Reset DB data installation
 
 (-v) // remove volumes
 ```bash
@@ -85,5 +94,6 @@ To generate your token, go to [DigitalOcean](https://cloud.digitalocean.com/acco
 
 ```bash
  sudo  rm -rf ./data
+ sudo  rm -rf ./pgadmin-data
 ```
 
