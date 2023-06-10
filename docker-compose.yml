@@ -37,7 +37,7 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /traefik/acme:/etc/traefik/acme # Copies the Let's Encrypt certificate locally for ease of backing up
+      - /3sem-traefik-setup-remote/acme:/etc/traefik/acme # Copies the Let's Encrypt certificate locally for ease of backing up
     labels:
 
       # Traefik configuration
@@ -67,7 +67,7 @@ services:
       traefik.http.middlewares.test-redirectscheme.redirectscheme.scheme: https # sets the scheme to redirect to (https)
       traefik.http.middlewares.test-redirectscheme.redirectscheme.permanent: true # sets the redirection to permanent
 
-  api:
+  restapi:
     image: tyskerdocker/sparkapi:latest
     container_name: sparkapi
     restart: unless-stopped
@@ -81,31 +81,34 @@ services:
 
       # Routers configuration
       # RedirectScheme http Router api
-      traefik.http.routers.api.rule: Host(`${API_DOMAIN}`)
-      traefik.http.routers.api.entrypoints: web
-      traefik.http.routers.api.middlewares: api-redirectscheme # applies the api-redirectscheme middleware to the api route
+      traefik.http.routers.restapi.rule: Host(`${API_DOMAIN}`)
+      traefik.http.routers.restapi.entrypoints: web
+      traefik.http.routers.restapi.middlewares: restapi-redirectscheme # applies the api-redirectscheme middleware to the api route
 
       # Https Router api-secure
-      traefik.http.routers.api-secure.rule: Host(`${API_DOMAIN}`)
-      traefik.http.routers.api-secure.entrypoints: websecure
-      traefik.http.routers.api-secure.service: api #  This line associates the router with the "api" service. This means that any requests that match the rules for this router will be forwarded to the "api" service.
-      traefik.http.routers.api-secure.tls.certresolver: myresolver # see below
-      traefik.http.routers.api-secure.middlewares: api-compress, api-ratelimit # applies the api-compress and api-ratelimit middlewares to the api route
+      traefik.http.routers.restapi-secure.rule: Host(`${API_DOMAIN}`)
+      traefik.http.routers.restapi-secure.entrypoints: websecure
+      traefik.http.routers.restapi-secure.service: restapi #  This line associates the router with the "api" service. This means that any requests that match the rules for this router will be forwarded to the "api" service.
+      traefik.http.routers.restapi-secure.tls.certresolver: myresolver # see below
+      traefik.http.routers.restapi-secure.middlewares: restapi-compress, restapi-ratelimit # applies the api-compress and api-ratelimit middlewares to the api route
 
       # Services configuration
-      traefik.http.services.api.loadbalancer.server.port: 7000 # sets the port for the api service
+      traefik.http.services.restapi.loadbalancer.server.port: 7000 # sets the port for the api service
 
       # Compress Middleware
-      traefik.http.middlewares.api-compress.compress: true # enables gzip compression
+      traefik.http.middlewares.restapi-compress.compress: true # enables gzip compression
 
       # Rate Limit Middleware
-      traefik.http.middlewares.api-ratelimit.ratelimit.average: 100 # sets the average number of requests (seconds is the default unit)
-      traefik.http.middlewares.api-ratelimit.ratelimit.period: 1m # sets the period of time for the average number of requests. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h"
-      traefik.http.middlewares.api-ratelimit.ratelimit.burst: 50 # burst rate is the additional capacity it can handle for short, unexpected surges in requests.
+      traefik.http.middlewares.restapi-ratelimit.ratelimit.average: 100 # sets the average number of requests (seconds is the default unit)
+      traefik.http.middlewares.restapi-ratelimit.ratelimit.period: 1m # sets the period of time for the average number of requests. Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h"
+      traefik.http.middlewares.restapi-ratelimit.ratelimit.burst: 50 # burst rate is the additional capacity it can handle for short, unexpected surges in requests.
 
       # Redirect Scheme HTTP -> HTTPS
-      traefik.http.middlewares.api-redirectscheme.redirectscheme.scheme: https # sets the scheme to redirect to (https)
-      traefik.http.middlewares.api-redirectscheme.redirectscheme.permanent: true
+      traefik.http.middlewares.restapi-redirectscheme.redirectscheme.scheme: https # sets the scheme to redirect to (https)
+      traefik.http.middlewares.restapi-redirectscheme.redirectscheme.permanent: true
+
+      # Watchtower configuration
+      com.centurylinklabs.watchtower.enable: "true" # enables Watchtower for this container
 
       #  "traefik.http.routers.api.tls.certresolver=myresolver": This line enables TLS (Transport Layer Security, for encrypted connections)
       #  for this router and specifies the certResolver to use when generating or retrieving TLS certificates for this router. This resolver could be
@@ -120,6 +123,9 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    labels:
+      # Watchtower configuration
+      com.centurylinklabs.watchtower.enable: "false" # disables Watchtower for this container
     volumes:
       - ./data:/var/lib/postgresql/data/
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -140,29 +146,46 @@ services:
       traefik.enable: true # enables Traefik for this container
 
       # Routers configuration
+      # RedirectScheme http Router pgadmin
       traefik.http.routers.pgadmin.rule: Host(`${PGADMIN_DOMAIN}`) # sets the hostname for the pgadmin route
       traefik.http.routers.pgadmin.entrypoints: web # sets the entrypoint for the pgadmin route
-      traefik.http.routers.pgadmin.middlewares: api-redirectscheme # applies the api-redirectscheme middleware to the api route
-      traefik.http.routers.pgadmin.service: pgadmin # ensures that the api route is linked to the pgadmin service
+      traefik.http.routers.pgadmin.middlewares: pgadmin-redirectscheme # applies the api-redirectscheme middleware to the api route
 
       # Https Router api-secure
       traefik.http.routers.pgadmin-secure.rule: Host(`${PGADMIN_DOMAIN}`)
       traefik.http.routers.pgadmin-secure.entrypoints: websecure
-      traefik.http.routers.pgadmin-secure.service: api #  This line associates the router with the "api" service. This means that any requests that match the rules for this router will be forwarded to the "api" service.
-
+      traefik.http.routers.pgadmin-secure.service: pgadmin #  This line associates the router with the "api" service. This means that any requests that match the rules for this router will be forwarded to the "api" service.
       traefik.http.routers.pgadmin-secure.tls.certresolver: myresolver # see below
 
       # Services configuration
       traefik.http.services.pgadmin.loadbalancer.server.port: 80 # sets the port for the pgadmin service
 
       # Redirect Scheme HTTP -> HTTPS
-      traefik.http.middlewares.api-redirectscheme.redirectscheme.scheme: https # sets the scheme to redirect to (https)
-      traefik.http.middlewares.api-redirectscheme.redirectscheme.permanent: true
+      traefik.http.middlewares.pgadmin-redirectscheme.redirectscheme.scheme: https # sets the scheme to redirect to (https)
+      traefik.http.middlewares.pgadmin-redirectscheme.redirectscheme.permanent: true
+
+      # Watchtower configuration
+      com.centurylinklabs.watchtower.enable: "false" # disables Watchtower for this container
     networks:
       - backend
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    environment:
+      REPO_USER: <your dockerhub username>
+      REPO_PASS: <your dockerhub password>
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+    networks:
+      - backend
+      - frontend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30 --cleanup --debug
 
 networks:
   frontend:
