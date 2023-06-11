@@ -3,6 +3,7 @@ version: '3.9'
 services:
   traefik:
     image: traefik:v3.0
+    container_name: traefik
     environment:
 
       # Traefik API
@@ -25,13 +26,13 @@ services:
 
       # Certificates configuration
       - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_DNSCHALLENGE=true
-      - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_DNSCHALLENGE_PROVIDER:${PROVIDER}
+      - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_DNSCHALLENGE_PROVIDER=${PROVIDER}
       - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_DNSCHALLENGE_DELAYBEFORECHECK=0 # Sets the time to wait before checking the DNS c>
-      - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_EMAIL:${EMAIL} # Email address used for registration
-      - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_STORAGE:${ACME_STORAGE} # Stores the Let's Encrypt certificate locally
+      - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_EMAIL=${EMAIL} # Email address used for registration
+      - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_STORAGE=${ACME_STORAGE} # Stores the Let's Encrypt certificate locally
 
       # Digital Ocean configuration
-      - DO_AUTH_TOKEN:${DO_AUTH_TOKEN} # Digital Ocean API Token
+      - DO_AUTH_TOKEN=${DO_AUTH_TOKEN} # Digital Ocean API Token
     ports: # Expose ports 80 and 443
       - "80:80"
       - "443:443"
@@ -55,6 +56,7 @@ services:
       # Https Router traefik-secure
       traefik.http.routers.traefik-secure.rule: Host(`${TRAFIK_DOMAIN}`) # sets the rule for the Traefik dashboard route
       traefik.http.routers.traefik-secure.entrypoints: websecure # sets the entrypoint for the Traefik dashboard route
+      traefik.http.routers.traefik-secure.tls: true # enables TLS for the Traefik dashboard route
       traefik.http.routers.traefik-secure.tls.certresolver: myresolver # sets the certificate resolver for the Traefik dashboard route
       traefik.http.routers.traefik-secure.service: api@internal
       traefik.http.routers.traefik-secure.middlewares: auth # sets the middleware for the Traefik dashboard route
@@ -182,8 +184,8 @@ services:
     image: containrrr/watchtower
     container_name: watchtower
     environment:
-      REPO_USER: <your dockerhub username>
-      REPO_PASS: <your dockerhub password>
+      REPO_USER: ${REPO_USER}
+      REPO_PASS: ${REPO_PASS}
     labels:
       com.centurylinklabs.watchtower.enable: "false"
     networks:
