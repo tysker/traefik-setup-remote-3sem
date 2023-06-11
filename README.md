@@ -19,6 +19,16 @@
 - [Docker Compose](https://docs.docker.com/compose/) for container orchestration
 - [DigitalOcean](https://www.digitalocean.com/) for cloud hosting
 
+## Debugging
+
+- Check if all containers are running with `docker ps -a`
+- Check if all env variables are set in .env file and are correct
+- Check if docker compose has read all environment variables with `docker-compose config`
+- Check the logs of the individual container with `docker logs <container_name>` or `docker logs --follow <container_name>`
+- Did you remember to add your domain to the DigitalOcean DNS servers?
+- Did you remember to add a wildcard DNS record for your domain?
+- Did you remember to create the acme.json file and set the correct permissions?
+
 ## Setup
 
 ### 1. Clone the repository into your server
