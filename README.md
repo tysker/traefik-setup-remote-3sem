@@ -58,7 +58,7 @@ REPO_USER=<your_dockerhub_username>
 
 ```
 
-To generate your token, go to [DigitalOcean](https://cloud.digitalocean.com/account/api/tokens) and create a new token.
+- To generate a digital ocean token, go to [DigitalOcean](https://cloud.digitalocean.com/account/api/tokens) and create a new token.
 
 ### 3. Create acme directory and an acme.json file
 
@@ -71,7 +71,7 @@ To generate your token, go to [DigitalOcean](https://cloud.digitalocean.com/acco
   chmod 600 ./acme/acme.json
 ```
 
-### 4. How to generate DASHBOARD_AUTH
+### 4. How to generate DASHBOARD_AUTH (git bash terminal)
 
 ```bash
   echo $(htpasswd -nb <your_username> <your_password>) | sed -e s/\\$/\\$\\$/g
@@ -98,7 +98,7 @@ To generate your token, go to [DigitalOcean](https://cloud.digitalocean.com/acco
 ### 8. Access Your Rest Api
 
 ```bash
-  <your_domain>/<your_api_path>
+  <your_domain>/<your_api_path> (example: api.3sem.dk/api or traefik.3sem.dk/api)
 ```
 
 ***
@@ -115,3 +115,7 @@ To generate your token, go to [DigitalOcean](https://cloud.digitalocean.com/acco
  sudo  rm -rf ./pgadmin-data
 ```
 
+***
+
+<img src="./utility/3sem-setup-local.drawio.png" alt="3 semester local environment setup">
+<img src="./utility/3sem-setup-remote.drawio.png" alt="3 semester local environment setup">
