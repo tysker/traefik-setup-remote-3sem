@@ -67,6 +67,9 @@ services:
       traefik.http.middlewares.test-redirectscheme.redirectscheme.scheme: https # sets the scheme to redirect to (https)
       traefik.http.middlewares.test-redirectscheme.redirectscheme.permanent: true # sets the redirection to permanent
 
+      # Watchtower configuration
+      com.centurylinklabs.watchtower.enable: "false" # disables Watchtower for this container
+
   restapi:
     image: tyskerdocker/sparkapi:latest
     container_name: sparkapi
@@ -185,7 +188,7 @@ services:
       - frontend
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30 --cleanup --debug
+    command: --interval 30 --cleanup --debug # checks for updates every 30 seconds, cleans up old images, and outputs debug logs
 
 networks:
   frontend:
