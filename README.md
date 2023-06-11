@@ -51,6 +51,11 @@ POSTGRES_PASSWORD=<your_postgres_password>
 PGADMIN_DOMAIN=pgadmin.<your_domain>
 PGADMIN_DEFAULT_EMAIL=<your_pgadmin_email>
 PGADMIN_DEFAULT_PASSWORD=<your_pgadmin_password>
+
+# Watchtower
+REPO_PASS=<your_dockerhub_token>
+REPO_USER=<your_dockerhub_username>
+
 ```
 
 To generate your token, go to [DigitalOcean](https://cloud.digitalocean.com/account/api/tokens) and create a new token.

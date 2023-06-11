@@ -35,6 +35,9 @@ services:
     ports: # Expose ports 80 and 443
       - "80:80"
       - "443:443"
+    networks:
+      - backend
+      - frontend
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /3sem-traefik-setup-remote/acme:/etc/traefik/acme # Copies the Let's Encrypt certificate locally for ease of backing up
@@ -71,8 +74,8 @@ services:
       com.centurylinklabs.watchtower.enable: "false" # disables Watchtower for this container
 
   restapi:
-    image: tyskerdocker/sparkapi:latest
-    container_name: sparkapi
+    image: tyskerdocker/helloworld_javalin_api:latest
+    container_name: restapi
     restart: unless-stopped
     networks:
       - frontend
@@ -91,12 +94,12 @@ services:
       # Https Router api-secure
       traefik.http.routers.restapi-secure.rule: Host(`${API_DOMAIN}`)
       traefik.http.routers.restapi-secure.entrypoints: websecure
-      traefik.http.routers.restapi-secure.service: restapi #  This line associates the router with the "api" service. This means that any requests that match the rules for this router will be forwarded to the "api" service.
+      #traefik.http.routers.restapi-secure.service: restapi #  This line associates the router with the "api" service. This means that any requests that match the rules for this router will be forwarded to the "api" service.
       traefik.http.routers.restapi-secure.tls.certresolver: myresolver # see below
       traefik.http.routers.restapi-secure.middlewares: restapi-compress, restapi-ratelimit # applies the api-compress and api-ratelimit middlewares to the api route
 
       # Services configuration
-      traefik.http.services.restapi.loadbalancer.server.port: 7000 # sets the port for the api service
+      traefik.http.services.restapi-secure.loadbalancer.server.port: 7070 # sets the port for the api service
 
       # Compress Middleware
       traefik.http.middlewares.restapi-compress.compress: true # enables gzip compression
@@ -157,11 +160,11 @@ services:
       # Https Router api-secure
       traefik.http.routers.pgadmin-secure.rule: Host(`${PGADMIN_DOMAIN}`)
       traefik.http.routers.pgadmin-secure.entrypoints: websecure
-      traefik.http.routers.pgadmin-secure.service: pgadmin #  This line associates the router with the "api" service. This means that any requests that match the rules for this router will be forwarded to the "api" service.
+      #traefik.http.routers.pgadmin-secure.service: pgadmin #  This line associates the router with the "api" service. This means that any requests that match the rules for this router will be forwarded to the "api" service.
       traefik.http.routers.pgadmin-secure.tls.certresolver: myresolver # see below
 
       # Services configuration
-      traefik.http.services.pgadmin.loadbalancer.server.port: 80 # sets the port for the pgadmin service
+      traefik.http.services.pgadmin-secure.loadbalancer.server.port: 80 # sets the port for the pgadmin service
 
       # Redirect Scheme HTTP -> HTTPS
       traefik.http.middlewares.pgadmin-redirectscheme.redirectscheme.scheme: https # sets the scheme to redirect to (https)
