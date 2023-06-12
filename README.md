@@ -28,6 +28,7 @@
 - Did you remember to add your domain to the DigitalOcean DNS servers?
 - Did you remember to add a wildcard DNS record for your domain?
 - Did you remember to create the acme.json file and set the correct permissions?
+- Run your docker compose file with `docker-compose up` (without the -d flag) and check the output logs for errors
 
 ## Setup
 

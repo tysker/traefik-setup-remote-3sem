@@ -96,7 +96,7 @@ services:
       # Https Router api-secure
       traefik.http.routers.restapi-secure.rule: Host(`${API_DOMAIN}`)
       traefik.http.routers.restapi-secure.entrypoints: websecure
-      #traefik.http.routers.restapi-secure.service: restapi #  This line associates the router with the "api" service. This means that any requests that match the rules for this router will be forwarded to the "api" service.
+      traefik.http.routers.restapi-secure.service: restapi #  This line associates the router with the "api" service. This means that any requests that match the rules for this router will be forwarded to the "api" service.
       traefik.http.routers.restapi-secure.tls.certresolver: myresolver # see below
       traefik.http.routers.restapi-secure.middlewares: restapi-compress, restapi-ratelimit # applies the api-compress and api-ratelimit middlewares to the api route
 
