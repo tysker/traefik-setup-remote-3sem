@@ -81,7 +81,7 @@ REPO_USER=<your_dockerhub_username>
   chmod 600 ./acme/acme.json
 ```
 
-### 4. How to generate a traefik dashboard login (linux terminal)
+### 4. How to generate a traefik dashboard login (only works in a linux terminal)
 
 ```bash
   echo $(htpasswd -nb <your_username> <your_password>) | sed -e s/\\$/\\$\\$/g
