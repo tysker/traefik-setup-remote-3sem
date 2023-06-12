@@ -109,7 +109,7 @@ REPO_USER=<your_dockerhub_username>
 ### 8. Access Your Rest Api
 
 ```bash
-  <your_domain>/<your_api_path> (example: api.3sem.dk/api or traefik.3sem.dk/api)
+  <your_domain>/<your_api_path> (example: api.3sem.dk/api or restapi.3sem.dk/api)
 ```
 
 ***
