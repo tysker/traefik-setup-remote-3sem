@@ -161,7 +161,6 @@ services:
       # Https Router api-secure
       traefik.http.routers.pgadmin-secure.rule: Host(`${PGADMIN_DOMAIN}`)
       traefik.http.routers.pgadmin-secure.entrypoints: websecure
-      #traefik.http.routers.pgadmin-secure.service: pgadmin #  This line associates the router with the "api" service. This means that any requests that match the rules for this router will be forwarded to the "api" service.
       traefik.http.routers.pgadmin-secure.tls.certresolver: myresolver # see below
 
       # Services configuration
