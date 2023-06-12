@@ -79,6 +79,7 @@ REPO_USER=<your_dockerhub_username>
 ```
 
 ```bash
+  chmod 600 ./acme
   chmod 600 ./acme/acme.json
 ```
 
