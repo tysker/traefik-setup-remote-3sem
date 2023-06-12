@@ -43,7 +43,7 @@
 # Lets-encrypt - Digital Ocean
 PROVIDER=digitalocean
 EMAIL=<your_email>
-ACME_STORAGE=/3sem-traefik-setup-remote/acme/acme.json
+ACME_STORAGE=/etc/traefik/acme/acme.json
 DO_AUTH_TOKEN=<your_digitalocean_token>
 
 # Traefik
