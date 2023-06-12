@@ -29,7 +29,7 @@ services:
       - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_DNSCHALLENGE_PROVIDER=${PROVIDER}
       - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_DNSCHALLENGE_DELAYBEFORECHECK=0 # Sets the time to wait before checking the DNS c>
       - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_EMAIL=${EMAIL} # Email address used for registration
-      - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_STORAGE=${ACME_STORAGE} # Stores the Let's Encrypt certificate locally
+      - TRAEFIK_CERTIFICATESRESOLVERS_MYRESOLVER_ACME_STORAGE=${ACME_STORAGE} # Stores the Let's Encrypt certificate in the docker volume
 
       # Digital Ocean configuration
       - DO_AUTH_TOKEN=${DO_AUTH_TOKEN} # Digital Ocean API Token
