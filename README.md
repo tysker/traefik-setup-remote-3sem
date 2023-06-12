@@ -44,7 +44,7 @@
 PROVIDER=digitalocean
 EMAIL=<your_email>
 ACME_STORAGE=/3sem-traefik-setup-remote/acme/acme.json
-DO_AUTH_TOKEN=<your_token>
+DO_AUTH_TOKEN=<your_digitalocean_token>
 
 # Traefik
 TRAFIK_DOMAIN=traefik.<your_domain>
@@ -81,7 +81,7 @@ REPO_USER=<your_dockerhub_username>
   chmod 600 ./acme/acme.json
 ```
 
-### 4. How to generate DASHBOARD_AUTH (git bash terminal)
+### 4. How to generate DASHBOARD_AUTH (linux terminal)
 
 ```bash
   echo $(htpasswd -nb <your_username> <your_password>) | sed -e s/\\$/\\$\\$/g
@@ -127,5 +127,4 @@ REPO_USER=<your_dockerhub_username>
 
 ***
 
-<img src="./utility/3sem-setup-local.drawio.png" alt="3 semester local environment setup">
 <img src="./utility/3sem-setup-remote.drawio.png" alt="3 semester local environment setup">
