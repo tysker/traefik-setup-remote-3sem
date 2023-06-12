@@ -31,13 +31,13 @@
 
 ## Setup
 
-### 1. Clone the repository into your server
+### 1. Clone the repository to your server
 
 ```bash
   git clone https://github.com/tysker/3sem-traefik-setup-remote.git
 ```
 
-### 2. Create .env file and add your environment variables
+### 2. Create a .env file and add your environment variables
 
 ```bash
 # Lets-encrypt - Digital Ocean
@@ -70,7 +70,7 @@ REPO_USER=<your_dockerhub_username>
 
 - To generate a digital ocean token, go to [DigitalOcean](https://cloud.digitalocean.com/account/api/tokens) and create a new token.
 
-### 3. Create acme directory and an acme.json file
+### 3. Create an acme directory and an acme.json file
 
 ```bash
   mkdir ./acme
@@ -81,7 +81,7 @@ REPO_USER=<your_dockerhub_username>
   chmod 600 ./acme/acme.json
 ```
 
-### 4. How to generate DASHBOARD_AUTH (linux terminal)
+### 4. How to generate a traefik dashboard login (linux terminal)
 
 ```bash
   echo $(htpasswd -nb <your_username> <your_password>) | sed -e s/\\$/\\$\\$/g
