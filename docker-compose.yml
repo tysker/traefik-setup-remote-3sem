@@ -41,7 +41,7 @@ services:
       - frontend
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /3sem-traefik-setup-remote/acme:/etc/traefik/acme # Copies the Let's Encrypt certificate locally for ease of backing up
+      - ./acme:/etc/traefik/acme # Copies the Let's Encrypt certificate locally for ease of backing up
     labels:
 
       # Traefik configuration
