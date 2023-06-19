@@ -82,6 +82,11 @@ services:
     networks:
       - frontend
       - backend
+    environment:
+      - CONNECTION_STR=jdbc:postgresql://db:5432/
+      - DB_USERNAME=dev
+      - DB_PASSWORD=ax2
+      - DEPLOYED=TRUE
     labels:
 
       # Traefik configuration
@@ -138,45 +143,6 @@ services:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
-
-  pgadmin: # https://turreta.com/blog/2020/07/31/docker-compose-yml-for-pgadmin-and-postgresql/
-    image: dpage/pgadmin4:7.3
-    container_name: pgadmin
-    restart: unless-stopped
-    depends_on:
-      - db
-    volumes:
-      - ./pgadmin-data:/pgadmin
-    labels:
-
-      # Traefik configuration
-      traefik.enable: true # enables Traefik for this container
-
-      # Routers configuration
-      # RedirectScheme http Router pgadmin
-      traefik.http.routers.pgadmin.rule: Host(`${PGADMIN_DOMAIN}`) # sets the hostname for the pgadmin route
-      traefik.http.routers.pgadmin.entrypoints: web # sets the entrypoint for the pgadmin route
-      traefik.http.routers.pgadmin.middlewares: pgadmin-redirectscheme # applies the api-redirectscheme middleware to the api route
-
-      # Https Router api-secure
-      traefik.http.routers.pgadmin-secure.rule: Host(`${PGADMIN_DOMAIN}`)
-      traefik.http.routers.pgadmin-secure.entrypoints: websecure
-      traefik.http.routers.pgadmin-secure.tls.certresolver: myresolver # see below
-
-      # Services configuration
-      traefik.http.services.pgadmin-secure.loadbalancer.server.port: 80 # sets the port for the pgadmin service
-
-      # Redirect Scheme HTTP -> HTTPS
-      traefik.http.middlewares.pgadmin-redirectscheme.redirectscheme.scheme: https # sets the scheme to redirect to (https)
-      traefik.http.middlewares.pgadmin-redirectscheme.redirectscheme.permanent: true
-
-      # Watchtower configuration
-      com.centurylinklabs.watchtower.enable: "false" # disables Watchtower for this container
-    networks:
-      - backend
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
 
   watchtower:
     image: containrrr/watchtower

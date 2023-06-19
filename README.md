@@ -14,7 +14,6 @@
 - [Let's Encrypt](https://letsencrypt.org/) for SSL certificates
 - [Traefik Dashboard](https://docs.traefik.io/operations/dashboard/) for monitoring
 - [PostgreSQL](https://www.postgresql.org/) for database
-- [pgAdmin](https://www.pgadmin.org/) for database management
 - [Docker](https://www.docker.com/) for containerization
 - [Docker Compose](https://docs.docker.com/compose/) for container orchestration
 - [DigitalOcean](https://www.digitalocean.com/) for cloud hosting
@@ -57,11 +56,6 @@ API_DOMAIN=<your_api_domain>
 # Postgres
 POSTGRES_USER=<your_postgres_user>
 POSTGRES_PASSWORD=<your_postgres_password>
-
-# PgAdmin
-PGADMIN_DOMAIN=pgadmin.<your_domain>
-PGADMIN_DEFAULT_EMAIL=<your_pgadmin_email>
-PGADMIN_DEFAULT_PASSWORD=<your_pgadmin_password>
 
 # Watchtower
 REPO_PASS=<your_dockerhub_token>
@@ -124,7 +118,12 @@ REPO_USER=<your_dockerhub_username>
 
 ```bash
  sudo  rm -rf ./data
- sudo  rm -rf ./pgadmin-data
+```
+
+### Connect you remote db to your local pgAdmin server
+
+```bash
+  <your_domain>:5432
 ```
 
 ***
