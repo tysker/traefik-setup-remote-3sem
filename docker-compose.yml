@@ -87,6 +87,9 @@ services:
       - DB_USERNAME=dev
       - DB_PASSWORD=ax2
       - DEPLOYED=TRUE
+      - SECRET_KEY=super_secret_key
+      - TOKEN_EXPIRE_TIME=1800000
+      - ISSUER=issuer
     labels:
 
       # Traefik configuration
