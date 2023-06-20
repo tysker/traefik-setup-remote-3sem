@@ -83,13 +83,13 @@ services:
       - frontend
       - backend
     environment:
-      - CONNECTION_STR=jdbc:postgresql://db:5432/
-      - DB_USERNAME=dev
-      - DB_PASSWORD=ax2
-      - DEPLOYED=TRUE
-      - SECRET_KEY=super_secret_key
-      - TOKEN_EXPIRE_TIME=1800000
-      - ISSUER=issuer
+      CONNECTION_STR: ${CONNECTION_STR}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DEPLOYED: ${DEPLOYED}
+      SECRET_KEY: ${SECRET_KEY}
+      TOKEN_EXPIRE_TIME: ${TOKEN_EXPIRE_TIME}
+      ISSUER: ${ISSUER}
     labels:
 
       # Traefik configuration
