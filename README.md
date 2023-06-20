@@ -53,13 +53,18 @@ DASHBOARD_AUTH=<your_dashboard_auth>
 # API
 API_DOMAIN=<your_api_domain>
 
-# Postgres
-POSTGRES_USER=<your_postgres_user>
-POSTGRES_PASSWORD=<your_postgres_password>
-
 # Watchtower
 REPO_PASS=<your_dockerhub_token>
 REPO_USER=<your_dockerhub_username>
+
+# REST API SETUP
+CONNECTION_STR=jdbc:postgresql://db:5432/
+DB_USERNAME=dev
+DB_PASSWORD=ax2
+DEPLOYED=TRUE
+SECRET_KEY=super_secret_key
+TOKEN_EXPIRE_TIME=1800000
+ISSUER=issuer
 
 ```
 
