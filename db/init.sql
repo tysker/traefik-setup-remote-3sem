@@ -1,14 +1,10 @@
-CREATE
-    USER dev WITH PASSWORD 'ax2';
-GRANT pg_read_all_data TO dev;
-GRANT pg_write_all_data TO dev;
+-- create role
+CREATE ROLE dev WITH LOGIN CREATEDB PASSWORD 'ax2';
 
-CREATE
-    DATABASE company_db;
-CREATE
-    DATABASE prod_db;
+-- create databases
+CREATE DATABASE company_db;
 
-\c company_db
+-- create tables
 CREATE TABLE companies
 (
     company_id   SERIAL PRIMARY KEY,
@@ -27,6 +23,7 @@ CREATE TABLE contacts
             REFERENCES companies (company_id)
 );
 
+-- insert data
 INSERT INTO companies(company_name)
 VALUES ('BlueBird Inc'),
        ('Dolphin LLC');
