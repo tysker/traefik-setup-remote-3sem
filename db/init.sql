@@ -4,6 +4,8 @@ CREATE ROLE dev WITH LOGIN CREATEDB PASSWORD 'ax2';
 -- create databases
 CREATE DATABASE company_db;
 
+\c company_db
+
 -- create tables
 CREATE TABLE companies
 (
