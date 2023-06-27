@@ -134,7 +134,7 @@ ISSUER=<your_domain>
  sudo  rm -rf ./data
 ```
 
-### Connect you remote db to your local pgAdmin server
+### Connect your remote database to your local pgAdmin container
 
 ```bash
   <your_domain>:5432
