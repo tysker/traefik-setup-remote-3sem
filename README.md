@@ -38,29 +38,45 @@
   git clone https://github.com/tysker/3sem-traefik-setup-remote.git
 ```
 
-### 2. Create a .env file and add your environment variables
+### 2. Install apache2-utils on your droplet terminal
+
+```bash
+  sudo apt-get install apache2-utils
+``
+
+### 3. Generate a traefik hashed dashboard login (droplet linux terminal )
+
+```bash
+  echo $(htpasswd -nb <your_username> <your_password>) | sed -e s/\\$/\\$\\$/g
+```
+
+### 4. Generate digital ocean token
+
+- To generate a digital ocean token, go to [DigitalOcean](https://cloud.digitalocean.com/account/api/tokens) and create a new token.
+
+### 5. Create a .env file and add your environment variables
 
 ```bash
 # Lets-encrypt - Digital Ocean
 PROVIDER=digitalocean
 EMAIL=<your_email>
 ACME_STORAGE=/etc/traefik/acme/acme.json
-DO_AUTH_TOKEN=<your_digitalocean_token>
+DO_AUTH_TOKEN=<your_digital_ocean_token>
 
 # Traefik
 TRAFIK_DOMAIN=traefik.<your_domain>
-DASHBOARD_AUTH=<your_dashboard_auth>
+DASHBOARD_AUTH=<your_traefik_dashboard_login>
 
 # API
-API_DOMAIN=<your_api_domain>
+API_DOMAIN=restapi.joergoertel.dk
 
-# Watchtower
-REPO_PASS=<your_dockerhub_token>
-REPO_USER=<your_dockerhub_username>
+# Postgres
+POSTGRES_USER=<your_postgres_user>
+POSTGRES_PASSWORD=<your_postgres_password>
 
 # REST API SETUP
 CONNECTION_STR=jdbc:postgresql://db:5432/
-DB_USERNAME=dev
+DB_USERNAME=<your_postgres_user>
 DB_PASSWORD=ax2
 DEPLOYED=TRUE
 SECRET_KEY=super_secret_key
@@ -68,10 +84,7 @@ TOKEN_EXPIRE_TIME=1800000
 ISSUER=issuer
 
 ```
-
-- To generate a digital ocean token, go to [DigitalOcean](https://cloud.digitalocean.com/account/api/tokens) and create a new token.
-
-### 3. Create an acme directory and an acme.json file
+### 6. Create an acme directory and an acme.json file
 
 ```bash
   mkdir ./acme
@@ -83,31 +96,25 @@ ISSUER=issuer
   chmod 600 ./acme/acme.json
 ```
 
-### 4. How to generate a traefik dashboard login (only works in a linux terminal)
-
-```bash
-  echo $(htpasswd -nb <your_username> <your_password>) | sed -e s/\\$/\\$\\$/g
-```
-
-### 5. Run Docker
+### 7. Run Docker
 
 ```bash
   docker-compose up -d
 ```
 
-### 6. Stop Docker
+### 8. Stop Docker
 
 ```bash
   docker-compose down
 ```
 
-### 7. Access Traefik Dashboard through browser
+### 9. Access Traefik Dashboard through browser
 
 ```bash
   traefik.<your_domain>
 ```
 
-### 8. Access Your Rest Api
+### 10. Access Your Rest Api
 
 ```bash
   <your_domain>/<your_api_path> (example: api.3sem.dk/api or restapi.3sem.dk/api)

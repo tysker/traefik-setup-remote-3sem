@@ -160,7 +160,7 @@ services:
       - frontend
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30 --cleanup --debug # checks for updates every 30 seconds, cleans up old images, and outputs debug logs
+    command: --interval 350 --cleanup --debug # checks for updates every 350 seconds, cleans up old images, and outputs debug logs
 
 networks:
   frontend:
