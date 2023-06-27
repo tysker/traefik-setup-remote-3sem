@@ -3,6 +3,7 @@
 ## Requirements
 
 - [DigitalOcean](https://www.digitalocean.com/) account
+- [Droplet with Docker preinstalled (Marketplace)](https://marketplace.digitalocean.com/apps/docker)
 - [DockerHub](https://hub.docker.com/search?q=) DockerHub account
 - [Domain](https://www.namecheap.com/) name (could be any provider)
 - Your domain is pointing to DigitalOcean DNS servers
