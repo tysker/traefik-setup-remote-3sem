@@ -42,7 +42,7 @@
 
 ```bash
   sudo apt-get install apache2-utils
-``
+``` 
 
 ### 3. Generate a traefik hashed dashboard login (droplet linux terminal )
 
