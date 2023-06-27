@@ -147,20 +147,20 @@ services:
     ports:
       - "5432:5432"
 
-  watchtower:
-    image: containrrr/watchtower
-    container_name: watchtower
-    environment:
-      REPO_USER: ${REPO_USER}
-      REPO_PASS: ${REPO_PASS}
-    labels:
-      com.centurylinklabs.watchtower.enable: "false"
-    networks:
-      - backend
-      - frontend
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 350 --cleanup --debug # checks for updates every 350 seconds, cleans up old images, and outputs debug logs
+#  watchtower:
+#    image: containrrr/watchtower
+#    container_name: watchtower
+#    environment:
+#      REPO_USER: ${REPO_USER}
+#      REPO_PASS: ${REPO_PASS}
+#    labels:
+#      com.centurylinklabs.watchtower.enable: "false"
+#    networks:
+#      - backend
+#      - frontend
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    command: --interval 600 --cleanup --debug # checks for updates every 600 seconds (10 min), cleans up old images, and outputs debug logs
 
 networks:
   frontend:
