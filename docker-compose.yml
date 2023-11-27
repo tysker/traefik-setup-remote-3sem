@@ -76,7 +76,7 @@ services:
       com.centurylinklabs.watchtower.enable: "false" # disables Watchtower for this container
 
   restapi:
-    image: tyskerdocker/helloworld_javalin_api:latest
+    image: <docker_username>/<docker_image_name:<tag>
     container_name: restapi
     restart: unless-stopped
     networks:
