@@ -11,7 +11,7 @@
 
 ## Features
 
-- [Traefik](https://traefik.io/) as a reverse proxy
+- [Traefik](https://doc.traefik.io/traefik/) as a reverse proxy
 - [Let's Encrypt](https://letsencrypt.org/) for SSL certificates
 - [Traefik Dashboard](https://docs.traefik.io/operations/dashboard/) for monitoring
 - [PostgreSQL](https://www.postgresql.org/) for database
