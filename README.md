@@ -52,8 +52,7 @@ TRAFIK_DOMAIN=traefik.<your_domain>
 DASHBOARD_AUTH=<your_traefik_dashboard_login> (see below step 4 and 5)
 
 # API
-API_DOMAIN=restapi.joergoertel.dk
-
+API_DOMAIN=restapi.<your_domain_name>
 # Postgres
 POSTGRES_USER=<your_postgres_user>
 POSTGRES_PASSWORD=<your_postgres_password>
