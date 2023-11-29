@@ -40,7 +40,53 @@
 - inside the folder create a file called `docker-compose.yml`
 - add the following inside the file:
 
-### Part 2: Traefik
+### Part 2: sql script
+
+- create a folder called `db`
+- inside the db folder add a file called `init.sql`
+- add the following inside the `init.sql` file
+
+```SQL
+-- create role
+CREATE ROLE dev WITH LOGIN CREATEDB PASSWORD 'ax2';
+
+-- create databases
+CREATE DATABASE company;
+
+\c company;
+
+-- create tables
+CREATE TABLE companies
+(
+  company_id   SERIAL PRIMARY KEY,
+  company_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE contacts
+(
+  contact_id   SERIAL PRIMARY KEY,
+  company_id   INT,
+  contact_name VARCHAR(255) NOT NULL,
+  phone        VARCHAR(25),
+  email        VARCHAR(100),
+  CONSTRAINT fk_company
+    FOREIGN KEY (company_id)
+      REFERENCES companies (company_id)
+);
+
+-- insert data
+INSERT INTO companies(company_name)
+VALUES ('BlueBird Inc'),
+       ('Dolphin LLC');
+
+INSERT INTO contacts(company_id, contact_name, phone, email)
+VALUES (1, 'John Doe', '(408)-111-1234', 'john.doe@bluebird.dev'),
+       (1, 'Jane Doe', '(408)-111-1235', 'jane.doe@bluebird.dev'),
+       (2, 'David Wright', '(408)-222-1234', 'david.wright@dolphin.dev');
+
+```
+
+### Part 3: Traefik
 
 - add the following inside the compose file
 - remember to add a valid email address `<YOUR_EMAIL_ADDRESS>`
@@ -77,16 +123,16 @@ networks:
     driver: bridge
 ```
 
-### Part 3: Create git repo
+### Part 4: Create git repo
 
 - create a new git repo for your `remote-docker-setup` project
 
-### Part 4: Droplet
+### Part 5: Droplet
 
 - log into your droplet via terminal
 - clone the `remote-docker-setup` project
 
-### Part 5: Frontend
+### Part 6: Frontend
 
 ```YML
   europe:
@@ -100,7 +146,7 @@ networks:
       - "com.centurylinklabs.watchtower.enable=true"
 ``` 
 
-### Part 6: DB
+### Part 7: DB
 
 ```YML
   db:
@@ -122,7 +168,7 @@ networks:
       - "5432:5432"
 ```
 
-### Part 7: create new db that fits to your api
+### Part 8: create new db that fits to your api
 
 You can do this in three ways:
 
@@ -130,7 +176,7 @@ You can do this in three ways:
 - inside your local pgadmin tool
 - inside Intellij's db plugin
 
-### Part 8: api
+### Part 9: api
 
 ```YML
   api:
@@ -156,7 +202,7 @@ You can do this in three ways:
       - "com.centurylinklabs.watchtower.enable=true"
 ```
 
-### Part 9: watchtower
+### Part 10: watchtower
 
 ```YML
   watchtower:
