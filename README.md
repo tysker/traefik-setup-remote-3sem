@@ -84,8 +84,95 @@ networks:
 ### Part 4: Droplet
 
 - log into your droplet via terminal
-- clone dit `remote-docker-setup` project
+- clone the `remote-docker-setup` project
 
+### Part 5: Frontend
+
+```YML
+  europe:
+    image: "webtrade/europemap"
+    container_name: "europemap_container"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.europe.rule=Host(`europe.<YOUR_DOMAIN_NAME>`)"
+      - "traefik.http.routers.europe.entrypoints=websecure"
+      - "traefik.http.routers.europe.tls.certresolver=myresolver"
+      - "com.centurylinklabs.watchtower.enable=true"
+``` 
+
+### Part 6: DB
+
+```YML
+  db:
+    image: postgres:latest
+    container_name: db
+    restart: unless-stopped
+    networks:
+      - backend
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: ax2
+    labels:
+      # Watchtower configuration
+      com.centurylinklabs.watchtower.enable: "false" # disables Watchtower for this container
+    volumes:
+      - ./data:/var/lib/postgresql/data/
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+```
+
+### Part 7: create new db that fits to your api
+
+You can do this in three ways:
+
+- inside the db docker terminal
+- inside your local pgadmin tool
+- inside Intellij's db plugin
+
+### Part 8: api
+
+```YML
+  api:
+    image: tyskerdocker/javalinapi:latest
+    container_name: api
+    environment:
+      - CONNECTION_STR=jdbc:postgresql://db:5432/
+      - DB_USERNAME=dev
+      - DB_PASSWORD=ax2
+      - DEPLOYED=TRUE
+      - SECRET_KEY=841D8A6C80CBA4FCAD32D5367C18C53B
+      - TOKEN_EXPIRE_TIME=1800000
+      - ISSUER=cphbusiness.dk
+    ports:
+      - "7070:7070"
+    networks:
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`api.<YOUR_DOMAIN_NAME>`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=myresolver"
+      - "com.centurylinklabs.watchtower.enable=true"
+```
+
+### Part 9: watchtower
+
+```YML
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    environment:
+      REPO_USER: <YOUR_DOCKERHUB_USERNAME>
+      REPO_PASS: <YOUR_DOCKERHUB_TOKEN>
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+    networks:
+      - backend
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 600 --cleanup --debug # checks for updates every 600 seconds (10 min), cleans up old images, and outputs debug logs
+``` 
 
 ## Access
 
