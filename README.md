@@ -4,7 +4,7 @@
 
 - [DigitalOcean](https://www.digitalocean.com/) account
 - [Droplet with Docker preinstalled (Marketplace)](https://marketplace.digitalocean.com/apps/docker)
-- [DockerHub](https://hub.docker.com/search?q=) DockerHub account
+- [DockerHub](https://hub.docker.com/search?q=) Docker-Hub account
 - [Domain](https://www.namecheap.com/) name (could be any provider)
 - Your domain is pointing to DigitalOcean DNS servers
 - Wildcard DNS record for your domain (*.your_domain.com)
@@ -32,47 +32,28 @@
 
 ## Setup
 
-### 1. Clone the repository to your server
+### 1. Clone the repository
 
 ```bash
   git clone https://github.com/tysker/3sem-traefik-setup-remote.git
 ```
 
-### 2. Create a .env file and add your environment variables to it
+- Rename the folder to your project name (optional)
+- Delete the .git folder
+- Delete the Readme.md, traefik, utility and images folder
+- Create a new repository on GitHub
+- Initialize a new git repository inside your project folder
+- Add your new repository as a remote and push your code
 
-```bash
-# Lets-encrypt - Digital Ocean
-PROVIDER=digitalocean
-EMAIL=<your_email>
-ACME_STORAGE=/etc/traefik/acme/acme.json
-DO_AUTH_TOKEN=<your_digital_ocean_token> (see below step 3)
-
-# Traefik
-TRAFIK_DOMAIN=traefik.<your_domain>
-DASHBOARD_AUTH=<your_traefik_dashboard_login> (see below step 4 and 5)
-
-# API
-API_DOMAIN=restapi.<your_domain_name>
-# Postgres
-POSTGRES_USER=<your_postgres_user>
-POSTGRES_PASSWORD=<your_postgres_password>
-
-# REST API SETUP
-CONNECTION_STR=jdbc:postgresql://db:5432/
-DB_USERNAME=<your_postgres_user>
-DB_PASSWORD=ax2
-DEPLOYED=TRUE
-SECRET_KEY=super_secret_key (has to include at least 32 characters letters and numbers)
-TOKEN_EXPIRE_TIME=1800000 (30 minutes)
-ISSUER=<your_domain>
-
-```
 ### 3. Generate digital ocean token
 
 - To generate a digital ocean token, go to [DigitalOcean](https://cloud.digitalocean.com/account/api/tokens) and create a new token.
 
+<img src="./images/digital_token.png">
 
-### 4. Install apache2-utils on your droplet terminal
+- Copy the token and save it somewhere safe. You will need it later.
+
+### 4. Install apache2-utils inside your droplet terminal
 
 ```bash
   sudo apt-get install apache2-utils
@@ -84,37 +65,72 @@ ISSUER=<your_domain>
   echo $(htpasswd -nb <your_username> <your_password>) | sed -e s/\\$/\\$\\$/g
 ```
 
-### 6. Create an acme directory and an acme.json file
+<img src="./images/encrypted-password.png">
 
-```bash
-  mkdir ./acme
-  touch ./acme/acme.json
-```
+- Copy the output and save it somewhere safe. You will need it later.
+
+### 6. Clone the repository into your droplet
+
+- remember to push your code to your repository before cloning it into your droplet
+
+### 7. Inside the project set permissions for the acme.json file and folder
 
 ```bash
   chmod 600 ./acme
   chmod 600 ./acme/acme.json
 ```
 
-### 7. Run Docker
+### 8. Create a .env file at the root of your project and add the following environment variables
+
+```bash
+# Lets-encrypt - Digital Ocean
+PROVIDER=digitalocean
+EMAIL=<your_email>
+ACME_STORAGE=/etc/traefik/acme/acme.json
+DO_AUTH_TOKEN=<your_digital_ocean_token> (see step 3)
+
+# Traefik
+TRAFIK_DOMAIN=traefik.<your_domain>
+DASHBOARD_AUTH=<your_traefik_dashboard_login> (see step 4 and 5)
+
+# API
+API_DOMAIN=api.<your_domain_name>
+# Postgres
+POSTGRES_USER=<your_postgres_user>
+POSTGRES_PASSWORD=<your_postgres_password>
+
+# REST API SETUP
+CONNECTION_STR=jdbc:postgresql://db:5432/
+DB_USERNAME=<your_postgres_user>
+DB_PASSWORD=<your_postgres_password>
+DEPLOYED=TRUE
+SECRET_KEY=super_secret_key (has to include at least 32 characters letters and numbers)
+TOKEN_EXPIRE_TIME=1800000 (30 minutes)
+ISSUER=<your_domain>
+
+```
+
+## How to use it 
+
+###  Run Docker
 
 ```bash
   docker-compose up -d
 ```
 
-### 8. Stop Docker
+### Stop Docker
 
 ```bash
   docker-compose down
 ```
 
-### 9. Access Traefik Dashboard through browser
+### Access Traefik Dashboard through browser
 
 ```bash
   traefik.<your_domain>
 ```
 
-### 10. Access Your Rest Api
+### Access Your Rest Api
 
 ```bash
   <your_domain>/<your_api_path> (example: api.3sem.dk/api or restapi.3sem.dk/api)

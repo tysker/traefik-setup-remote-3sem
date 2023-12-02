@@ -3,6 +3,7 @@ CREATE ROLE dev WITH LOGIN CREATEDB PASSWORD 'ax2';
 
 -- create databases
 CREATE DATABASE company;
+CREATE DATABASE projectdb;
 
 \c company;
 
