@@ -136,8 +136,6 @@ ISSUER=<your_domain>
   <your_domain>/<your_api_path> (example: api.3sem.dk/api or restapi.3sem.dk/api)
 ```
 
-***
-
 ### Reset DB data installation
 
 (-v) // remove volumes
@@ -154,6 +152,10 @@ ISSUER=<your_domain>
 ```bash
   <your_domain>:5432
 ```
+
+### Testing the api
+
+- use the http file inside the utility folder to test the api
 
 ***
 
