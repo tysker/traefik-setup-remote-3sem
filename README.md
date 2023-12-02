@@ -157,4 +157,4 @@ ISSUER=<your_domain>
 
 ***
 
-<img src="./utility/3sem-setup-remote.drawio.png" alt="3 semester local environment setup">
+<img src="images/3sem-setup-remote.drawio.png" alt="3 semester local environment setup">
