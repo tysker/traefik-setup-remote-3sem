@@ -125,6 +125,38 @@ services:
       # Watchtower configuration
       com.centurylinklabs.watchtower.enable: "true" # enables Watchtower for this container
 
+  schoolhacks:
+    image: tyskerdocker/schoolhacks-app:latest
+    container_name: schoolhacks
+    restart: unless-stopped
+    networks:
+      - frontend
+    labels:
+
+      # Traefik configuration
+      traefik.enable: true # enables Traefik for this container
+
+      # Routers configuration
+      # RedirectScheme http Router api
+      traefik.http.routers.schoolhacks.rule: Host(`${SCHOOLHACKS_DOMAIN}`)
+      traefik.http.routers.schoolhacks.entrypoints: web
+      traefik.http.routers.schoolhacks.middlewares: schoolhacks-redirectscheme # applies the api-redirectscheme middleware to the api route
+
+      # Https Router api-secure
+      traefik.http.routers.schoolhacks-secure.rule: Host(`${SCHOOLHACKS_DOMAIN}`)
+      traefik.http.routers.schoolhacks-secure.entrypoints: websecure
+      traefik.http.routers.schoolhacks-secure.tls.certresolver: myresolver # see below
+
+      # Services configuration
+      traefik.http.services.schoolhacks-secure.loadbalancer.server.port: 7070 # sets the port for the api service
+
+      # Redirect Scheme HTTP -> HTTPS
+      traefik.http.middlewares.schoolhacks-redirectscheme.redirectscheme.scheme: https # sets the scheme to redirect to (https)
+      traefik.http.middlewares.schoolhacks-redirectscheme.redirectscheme.permanent: true
+
+      # Watchtower configuration
+      com.centurylinklabs.watchtower.enable: "true" # enables Watchtower for this container
+
 
   db:
     image: postgres:latest

@@ -95,9 +95,14 @@ DASHBOARD_AUTH=<your_traefik_dashboard_login> (see step 4 and 5)
 
 # API
 API_DOMAIN=api.<your_domain_name>
+
 # Postgres
 POSTGRES_USER=<your_postgres_user>
 POSTGRES_PASSWORD=<your_postgres_password>
+
+# Watchtower
+REPO_USER=<your_docker_hub_username>
+REPO_PASS=<your_docker_hub_password>
 
 # REST API SETUP
 CONNECTION_STR=jdbc:postgresql://db:5432/
@@ -109,6 +114,55 @@ TOKEN_EXPIRE_TIME=1800000 (30 minutes)
 ISSUER=<your_domain>
 
 ```
+
+## Frontend Deployment
+
+### 1. Create a new file called nginx.conf and add the following code
+
+```bash
+server {
+    listen       80;
+    listen  [::]:80;
+    server_name  localhost;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+
+### 2. Create a new file called Dockerfile and add the following code
+
+```bash
+# First stage: build the react app
+# FROM tiangolo/node-frontend:10 as build-stage
+FROM node:18 as build-stage
+WORKDIR /app
+COPY package*.json /app/
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Second stage: use the build output from the first stage with nginx
+FROM nginx:1.25
+COPY --from=build-stage /app/dist/ /usr/share/nginx/html
+
+# Copy the default nginx.conf to get the try-files directive to work with react router
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+```
+### 3. Add both files to your frontend root folder (same level as package.json) and push your code to your git repo 
+
+**The above requires that you have already set up a github workflow (pipeline) for your frontend project.**
+
+### 4. Exchange the schoolhack image in the docker-compose file with your own image
+
+```bash
+  image: <your_docker_hub_username>/<your_docker_hub_repo_name>:<your_docker_hub_tag>
+```
+
+**Remember to replace everything related to schoolhack with your own project name**
 
 ## How to use it
 
