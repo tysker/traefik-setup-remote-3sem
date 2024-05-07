@@ -1,13 +1,22 @@
--- create role
-CREATE ROLE dev WITH LOGIN CREATEDB PASSWORD 'ax2';
+CREATE ROLE dev PASSWORD 'ax2' LOGIN CREATEDB;
+GRANT pg_read_all_data TO dev;
+GRANT pg_write_all_data TO dev;
+SET ROLE dev;
 
 -- create databases
 CREATE DATABASE company;
 CREATE DATABASE projectdb;
+CREATE DATABASE testdb;
 
-\c company;
+\connect projectdb;
+GRANT ALL PRIVILEGES ON DATABASE projectdb TO dev;
 
--- create tables
+\connect testdb;
+GRANT ALL PRIVILEGES ON DATABASE testdb TO dev;
+
+\connect company;
+GRANT ALL PRIVILEGES ON DATABASE company TO dev;
+
 CREATE TABLE companies
 (
     company_id   SERIAL PRIMARY KEY,
